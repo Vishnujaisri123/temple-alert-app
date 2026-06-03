@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -8,6 +9,16 @@ import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
 
 export default function HomeScreen() {
+  const handleConnectCalendar = async () => {
+    const userId = "test-user-123"; // Using test-user-123 for demonstration
+    const authUrl = `http://localhost:3000/auth/google?userId=${userId}`;
+    try {
+      await WebBrowser.openBrowserAsync(authUrl);
+    } catch (error) {
+      console.error("Failed to open auth browser:", error);
+    }
+  };
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#FF9933', dark: '#800000' }}
@@ -24,6 +35,16 @@ export default function HomeScreen() {
       <ThemedView style={styles.alertCard}>
         <ThemedText type="subtitle" style={{ color: '#800000' }}>Active Alert: Mahasivaratri</ThemedText>
         <ThemedText>Special Darshan timings are now active. Expected wait time: 45 mins.</ThemedText>
+      </ThemedView>
+
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Google Calendar</ThemedText>
+        <ThemedText style={{ marginBottom: 8 }}>
+          Link your Google Calendar to automatically synchronize temple alerts, poojas, and event schedules.
+        </ThemedText>
+        <TouchableOpacity style={styles.connectButton} onPress={handleConnectCalendar}>
+          <ThemedText style={styles.buttonText}>Connect Google Calendar</ThemedText>
+        </TouchableOpacity>
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>
@@ -89,4 +110,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
+  connectButton: {
+    backgroundColor: '#800000',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
 });
+
