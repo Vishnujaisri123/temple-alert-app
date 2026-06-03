@@ -37,7 +37,8 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-const REDIRECT_URI = `http://localhost:${PORT}/auth/google/callback`;
+const BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+const REDIRECT_URI = `${BACKEND_URL}/auth/google/callback`;
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
