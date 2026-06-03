@@ -11,7 +11,8 @@ import { Link } from 'expo-router';
 export default function HomeScreen() {
   const handleConnectCalendar = async () => {
     const userId = "test-user-123"; // Using test-user-123 for demonstration
-    const authUrl = `http://localhost:3000/auth/google?userId=${userId}`;
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
+    const authUrl = `${apiUrl}/auth/google?userId=${userId}`;
     try {
       await WebBrowser.openBrowserAsync(authUrl);
     } catch (error) {

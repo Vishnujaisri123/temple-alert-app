@@ -15,7 +15,14 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
 // Initialize Firebase Admin
 try {
-  const serviceAccount = require(path.join(__dirname, '../serviceAccountKey.json'));
+  let serviceAccount;
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    console.log("Firebase Admin loaded from FIREBASE_SERVICE_ACCOUNT environment variable.");
+  } else {
+    serviceAccount = require(path.join(__dirname, '../serviceAccountKey.json'));
+    console.log("Firebase Admin loaded from local serviceAccountKey.json file.");
+  }
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
